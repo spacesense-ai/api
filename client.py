@@ -48,6 +48,9 @@ class NDVIClient:
     @property
     def _header(self):
         return {"Authorization": f"Bearer {self._token}"}
+    @property
+    def _header_json(self):
+        return {"Authorization": f"Bearer {self._token}", 'Content-Type': 'application/json'}
 
     def _refresh_token(self):
         http = urllib3.PoolManager()
@@ -56,6 +59,66 @@ class NDVIClient:
             self._token = json.loads(r.data)['token']
         else:
             raise ValueError("Unexpected error")
+    def register_field(self,field_info):
+        """
+
+        :param field_info: [json]
+        example input=
+        {
+        "field_name":"field_56794",
+        "label":["ndvi","ndwi","lai","savi","rgb","ndre","chi","smi","Farmer-34"],
+        "geojson":{
+        "type": "FeatureCollection",
+        "features": [
+                        {
+                          "type": "Feature",
+                          "properties": {},
+                          "geometry": {
+                            "type": "Polygon",
+                            "coordinates": [
+                              [
+                                [
+                                  -4.391269683837891,
+                                  39.71808094723828
+                                ],
+                                [
+                                  -4.388244152069092,
+                                  39.71149505915214
+                                ],
+                                [
+                                  -4.3865275382995605,
+                                  39.7120727937937
+                                ],
+                                [
+                                  -4.387707710266113,
+                                  39.717800358315465
+                                ],
+                                [
+                                  -4.391269683837891,
+                                  39.71808094723828
+                                ]
+                              ]
+                            ]
+                          }
+                    }
+                ]
+            }
+
+        }
+
+
+        :return:
+        """
+        http = urllib3.PoolManager()
+        json_encoded = json.dumps(field_info)
+        r = http.request('POST', f'{self._HOST_NAME}/fields/register', headers=self._header_json, body=json_encoded)
+        if r.status == 200:
+            self._refresh_token()
+            data = json.loads(r.data)
+            return self._encapsulate_data(data)
+        else:
+            return self._handle_error(r)
+
 
     def get_fields(self, service_name=None, by_label=None):
         http = urllib3.PoolManager()
@@ -73,7 +136,7 @@ class NDVIClient:
         if r.status == 200:
             self._refresh_token()
             data = json.loads(r.data)
-            return self._encapsulate_data(data)
+            return self._encapsulate_data(data["message"])
         else:
             return self._handle_error(r)
     
