@@ -1,2 +1,2 @@
 # api
-Utilities to interact with our api
+Python utilities to interact with SpaceSense API
