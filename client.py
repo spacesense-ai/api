@@ -62,8 +62,8 @@ class NDVIClient:
     def register_field(self,field_info):
         """
 
-        :param field_info: [json]
-        example input=
+        :param field_info: [dict]
+        example: field_info =
         {
         "field_name":"field_56794",
         "label":["ndvi","ndwi","lai","savi","rgb","ndre","chi","smi","Farmer-34"],
