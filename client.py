@@ -57,9 +57,19 @@ class NDVIClient:
         else:
             raise ValueError("Unexpected error")
 
-    def get_fields(self):
+    def get_fields(self, service_name=None, by_label=None):
         http = urllib3.PoolManager()
-        r = http.request('POST',f'{self._HOST_NAME}/fields/list',headers=self._header)
+        if by_label is not None:
+            body_args={'label':by_label}
+            if service_name:
+                r = http.request('POST', f'{self._HOST_NAME}/fields/list/{service_name}', headers=self._header,fields=body_args)
+            else:
+                r = http.request('POST',f'{self._HOST_NAME}/fields/list',headers=self._header,fields=body_args)
+        else:
+            if service_name:
+                r = http.request('POST', f'{self._HOST_NAME}/fields/list/{service_name}', headers=self._header)
+            else:
+                r = http.request('POST',f'{self._HOST_NAME}/fields/list',headers=self._header)
         if r.status == 200:
             self._refresh_token()
             data = json.loads(r.data)
@@ -68,6 +78,11 @@ class NDVIClient:
             return self._handle_error(r)
     
     def is_field(self, field_name):
+        """
+
+        :param field_name:
+        :return:
+        """
         http = urllib3.PoolManager()
         r = http.request('GET',f'{self._HOST_NAME}/fields/check/{field_name}',headers=self._header)
         if r.status == 200:
@@ -109,7 +124,7 @@ class NDVIClient:
         else:
             return self._handle_error(r)
     
-    def download(self, field_name,service_name, by_ext=None, by_date=None, output_folder=None):
+    def download(self, field_name, service_name, by_ext=None, by_date=None, output_folder=None):
         """
 
         :param field_name:
