@@ -8,6 +8,8 @@ To get a trial account, contact us at [contact@spacesense.ai](https://www.spaces
 ### Get Started
 ##### Step 1: Login
 ```python
+from client import NDVIClient
+
 cl = NDVIClient('username','password')
 ```
 ##### Step 2: Register Fields
