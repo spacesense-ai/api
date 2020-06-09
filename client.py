@@ -172,7 +172,7 @@ class NDVIClient:
         if r.status == 200:
             self._refresh_token()
             data = json.loads(r.data)
-            return self._encapsulate_data(data["message"])
+            return self._encapsulate_data(data)
         else:
             return self._handle_error(r)
     
