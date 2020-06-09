@@ -96,9 +96,18 @@ update = {
 cl.update_field(field_info=update)
 
 ```
+
+##### Delete fields
+- Remove registered fields
+```python
+
+cl.delete_field('field_52494')
+
+```
+
 ##### Get Fields
 - List all available fields. 
-- You can check for available fields registred for a specific service or under a common custom label
+- You can check for available fields registered for a specific service or under a common custom label
 ```python
 # to list all registered fields
 cl.get_fields()
