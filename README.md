@@ -8,7 +8,7 @@ To get a trial account, contact us at [contact@spacesense.ai](https://www.spaces
 ### Get Started
 ##### Step 1: Login
 ```python
-from client import APIClient
+from api.client import APIClient
 
 cl = APIClient('username','password')
 ```
