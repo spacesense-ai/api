@@ -1,9 +1,10 @@
 ## Python API support
 Python utilities to interact with SpaceSense API
 
-Find out more on how you can integrate Satellite Intelligence in your application at [spacesense.ai](www.spacesense.ai)
+Find out more on how you can integrate Satellite Intelligence in your application at [SpaceSense.ai](https://www.spacesense.ai/)
 
-To get a trial account, contact us at [contact@spacesense.ai](contact@spacesense.ai)
+To get a trial account, contact us at [contact@spacesense.ai](https://www.spacesense.ai/copy-of-solutions)
+
 ### Get Started
 ##### Step 1: Login
 ```python
