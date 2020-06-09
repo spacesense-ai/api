@@ -1,6 +1,9 @@
 ## Python API support
 Python utilities to interact with SpaceSense API
 
+Find out more on how you can integrate Satellite Intelligence in your application at [spacesense.ai](www.spacesense.ai)
+
+To get a trial account, contact us at [contact@spacesense.ai]()
 ### Get Started
 ##### Step 1: Login
 ```python
@@ -73,14 +76,19 @@ output
         }
     },
     "field_name": "field_52494",
-    "label":['ndvi', 'ndwi', 'lai', 'savi', 'rgb', 'ndre', 'chi', 'smi', 'Farmer-34','username']
-    "area": '190.94',
+    "label":['ndvi', 'ndwi', 'lai', 'savi', 'rgb', 'ndre', 'chi', 'smi', 'Farmer-34','username'],
+    "area (ha)": '190.94',
 }
 ```
 ##### Update Field: update services for a field
 - Make sure to include all existing and new services/labels. 'update' function replaces existing services and labels
 ```python
-cl.update_field(field_info={"field_name":"field_52494","label":["NDVI","SAVI","NDRE","Farmer-34"]})
+update = {
+            "field_name":"field_52494",
+            "label":["NDVI","SAVI","NDRE","Farmer-34"]
+            }
+cl.update_field(field_info=update)
+
 ```
 ##### Get Fields
 - List all available fields. 
@@ -106,13 +114,13 @@ cl.get_fields(by_label='Farmer-34',service_name="ndvi")
 You can anytime view all available insights.
 ```python
 
-cl.list_files(field_name='field_52494',service_name="ndwi")
+cl.list_files(field_name='field_52494',service_name="smi")
 
 #filter by date: "YYYY-MM-DD" or datetime.datetime(YYYY,MM,DD)
-cl.list_files(field_name='field_52494',service_name="ndwi",by_date='2020-06-06')
+cl.list_files(field_name='field_52494',service_name="chi",by_date='2020-06-06')
 
 #filter by month: "YYYY-MM" or datetime.datetime(YYYY,MM,01)
-cl.list_files(field_name='field_52494',service_name="ndwi",by_month='2020-06')
+cl.list_files(field_name='field_52494',service_name="ndvi",by_month='2020-06')
 
 ```
 
@@ -126,7 +134,7 @@ cl.download(field_name='field_52494',service_name="ndwi")
 
 # get the insight closest to a specific date
 #filter by date: "YYYY-MM-DD" or datetime.datetime(YYYY,MM,DD)
-cl.download(field_name='field_52494',service_name="ndwi",by_date='2020-06-06', output_folder='/home/app/db')
+cl.download(field_name='field_52494',service_name="ndre",by_date='2020-06-06', output_folder='/home/app/db')
 
 ```
 
