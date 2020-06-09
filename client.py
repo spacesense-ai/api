@@ -8,6 +8,7 @@ import urllib3
 import json
 import datetime
 
+
 class NDVIClient:
     _HOST_NAME = "http://api-spacesense.dt.r.appspot.com"
 
@@ -62,7 +63,7 @@ class NDVIClient:
         if r.status == 200:
             self._refresh_token()
             data = json.loads(r.data)
-            return self._encapsulate_data(data['fields'])
+            return self._encapsulate_data(data)
         else:
             return self._handle_error(r)
     
@@ -76,16 +77,31 @@ class NDVIClient:
         else:
             return self._handle_error(r)
     
-    def list_files(self, field_name, by_ext=None, by_date=None):
+    def list_files(self, field_name, service_name, by_ext=None, by_date=None, by_month=None):
+        """
+
+        :param field_name:
+        :param service_name:
+        :param by_ext:
+        :param by_date:
+        :param by_month:
+        :return:
+        """
+
         http = urllib3.PoolManager()
         body_args = {'field_name':field_name}
+        service_name= service_name
         if by_ext is not None:
             body_args.update({'ext': by_ext})
         if by_date is not None:
             if isinstance(by_date, datetime.datetime):
                 by_date = by_date.strftime('%Y-%m-%d')
             body_args.update({'date': by_date})
-        r = http.request('POST',f'{self._HOST_NAME}/files/list',headers=self._header, fields=body_args)
+        if by_month is not None:
+            if isinstance(by_month, datetime.datetime):
+                by_month = by_month.strftime('%Y-%m')
+            body_args.update({'month': by_month})
+        r = http.request('POST',f'{self._HOST_NAME}/files/list/{service_name}',headers=self._header, fields=body_args)
         if r.status == 200:
             self._refresh_token()
             data = json.loads(r.data)
@@ -93,16 +109,26 @@ class NDVIClient:
         else:
             return self._handle_error(r)
     
-    def download(self, field_name, by_ext=None, by_date=None, output_folder=None):
+    def download(self, field_name,service_name, by_ext=None, by_date=None, output_folder=None):
+        """
+
+        :param field_name:
+        :param service_name:
+        :param by_ext:
+        :param by_date:
+        :param output_folder:
+        :return:
+        """
         http = urllib3.PoolManager()
         body_args = {'field_name':field_name}
+        service_name = service_name
         if by_ext is not None:
             body_args.update({'ext': by_ext})
         if by_date is not None:
             if isinstance(by_date, datetime.datetime):
                 by_date = by_date.strftime('%Y-%m-%d')
             body_args.update({'date': by_date})
-        r = http.request('POST',f'{self._HOST_NAME}/files/get',headers=self._header, fields=body_args)
+        r = http.request('POST',f'{self._HOST_NAME}/files/get/{service_name}',headers=self._header, fields=body_args)
         if r.status == 200:
             self._refresh_token()
             info = r.info()
