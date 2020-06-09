@@ -119,6 +119,36 @@ class NDVIClient:
         else:
             return self._handle_error(r)
 
+    def update_field(self,field_info):
+        """
+
+        :param labels: [list] include all services (existing and new) and any other custom label you want for this field. Examples: ["ndvi","custom_label"]
+        :return:
+        """
+        http = urllib3.PoolManager()
+        json_encoded = json.dumps(field_info)
+        r = http.request('POST', f'{self._HOST_NAME}/fields/update', headers=self._header_json, body=json_encoded)
+        if r.status == 200:
+            self._refresh_token()
+            data = json.loads(r.data)
+            return self._encapsulate_data(data)
+        else:
+            return self._handle_error(r)
+
+    def delete_field(self, field_name):
+        """
+
+        :param field_name:[str]
+        :return:
+        """
+        http = urllib3.PoolManager()
+        r = http.request('GET', f'{self._HOST_NAME}/fields/delete/{field_name}', headers=self._header)
+        if r.status == 200:
+            self._refresh_token()
+            data = json.loads(r.data)
+            return self._encapsulate_data(data)
+        else:
+            return self._handle_error(r)
 
     def get_fields(self, service_name=None, by_label=None):
         http = urllib3.PoolManager()
