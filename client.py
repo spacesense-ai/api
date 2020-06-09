@@ -9,7 +9,7 @@ import json
 import datetime
 
 
-class NDVIClient:
+class APIClient:
     _HOST_NAME = "http://api-spacesense.dt.r.appspot.com"
 
     def __init__(self, username, password):

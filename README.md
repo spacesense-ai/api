@@ -8,9 +8,9 @@ To get a trial account, contact us at [contact@spacesense.ai](https://www.spaces
 ### Get Started
 ##### Step 1: Login
 ```python
-from client import NDVIClient
+from client import APIClient
 
-cl = NDVIClient('username','password')
+cl = APIClient('username','password')
 ```
 ##### Step 2: Register Fields
 - You can register a single polygon each time
