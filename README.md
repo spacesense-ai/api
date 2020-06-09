@@ -83,6 +83,9 @@ output
     "area (ha)": '190.94',
 }
 ```
+
+#### Other Utilities
+
 ##### Update Field: update services for a field
 - Make sure to include all existing and new services/labels. 'update' function replaces existing services and labels
 ```python
