@@ -20,7 +20,7 @@ class NDVIClient:
 
     def _get_token(self, username, password):
         http = urllib3.PoolManager()
-        r = http.request('POST',f'{self._HOST_NAME}/user/login',fields={'username': username, 'password':password})
+        r = http.request('POST',f'{self._HOST_NAME}/user/login',fields={'username': username, 'password': password})
         if 'token' in json.loads(r.data):
             self._token = json.loads(r.data)['token']
             self.username = username
@@ -61,9 +61,10 @@ class NDVIClient:
             raise ValueError("Unexpected error")
     def register_field(self,field_info):
         """
+        Registers a single polygon
 
         :param field_info: [dict]
-        example: field_info =
+        Example: field_info =
         {
         "field_name":"field_56794",
         "label":["ndvi","ndwi","lai","savi","rgb","ndre","chi","smi","Farmer-34"],
@@ -105,9 +106,6 @@ class NDVIClient:
             }
 
         }
-
-
-        :return:
         """
         http = urllib3.PoolManager()
         json_encoded = json.dumps(field_info)
@@ -121,9 +119,10 @@ class NDVIClient:
 
     def update_field(self,field_info):
         """
+        Update services for a field and/or update custom label.
 
-        :param labels: [list] include all services (existing and new) and any other custom label you want for this field. Examples: ["ndvi","custom_label"]
-        :return:
+        :param labels: [list] include all services (existing and new) and any other custom label you want for this field.
+        Examples: ["ndvi","custom_label"]
         """
         http = urllib3.PoolManager()
         json_encoded = json.dumps(field_info)
@@ -137,9 +136,9 @@ class NDVIClient:
 
     def delete_field(self, field_name):
         """
+        Delete a registered field
 
         :param field_name:[str]
-        :return:
         """
         http = urllib3.PoolManager()
         r = http.request('GET', f'{self._HOST_NAME}/fields/delete/{field_name}', headers=self._header)
@@ -151,6 +150,13 @@ class NDVIClient:
             return self._handle_error(r)
 
     def get_fields(self, service_name=None, by_label=None):
+        """
+        View all registered fields
+
+        :param service_name:[str] filter by service. Example: "ndvi"
+        :param by_label: [str] filter by custom label (defined at field registration)
+        :return: [dict] fieldname,area(ha),[labels/services]
+        """
         http = urllib3.PoolManager()
         if by_label is not None:
             body_args={'label':by_label}
@@ -172,9 +178,10 @@ class NDVIClient:
     
     def is_field(self, field_name):
         """
+        Checks if a field name is available in registred fields
 
         :param field_name:
-        :return:
+        :return:[Boolean]
         """
         http = urllib3.PoolManager()
         r = http.request('GET',f'{self._HOST_NAME}/fields/check/{field_name}',headers=self._header)
@@ -187,12 +194,13 @@ class NDVIClient:
     
     def list_files(self, field_name, service_name, by_ext=None, by_date=None, by_month=None):
         """
+        Lists all available files for a field under a service
 
-        :param field_name:
-        :param service_name:
-        :param by_ext:
-        :param by_date:
-        :param by_month:
+        :param field_name:[str]
+        :param service_name:[str]
+        :param by_ext:[str] 'json' or 'png'
+        :param by_date:[str] or datetime format
+        :param by_month:[str] or datetime format
         :return:
         """
 
@@ -220,12 +228,12 @@ class NDVIClient:
     def download(self, field_name, service_name, by_ext=None, by_date=None, output_folder=None):
         """
 
-        :param field_name:
-        :param service_name:
-        :param by_ext:
-        :param by_date:
-        :param output_folder:
-        :return:
+        :param field_name:[str]
+        :param service_name:[str]
+        :param by_ext:[str] 'json' or 'png'
+        :param by_date:[str] or datetime format
+        :param output_folder:[str] path
+        :return: zip file
         """
         http = urllib3.PoolManager()
         body_args = {'field_name':field_name}
